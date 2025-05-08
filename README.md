@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Todo App with Next.js, Supabase, and Vercel
 
-## Getting Started
+Next.js、Supabase、Vercelを使用したシンプルなTodoアプリケーション。
 
-First, run the development server:
+## セットアップ手順
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### 1. Supabaseプロジェクトの作成
+
+1. [Supabase](https://supabase.com/)にアクセスし、アカウント作成・ログインします。
+2. 新しいプロジェクトを作成します。
+3. プロジェクトが作成されたら、SQL Editorに移動し、以下のSQLを実行してtodosテーブルを作成します：
+
+```sql
+CREATE TABLE todos (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title TEXT NOT NULL,
+  is_completed BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  user_id UUID
+);
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Settings > API からプロジェクトのURL（`NEXT_PUBLIC_SUPABASE_URL`）と匿名キー（`NEXT_PUBLIC_SUPABASE_ANON_KEY`）をコピーします。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. 環境変数の設定
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+プロジェクトのルートディレクトリに`.env.local`ファイルを作成し、Supabaseの接続情報を設定します：
 
-## Learn More
+```
+NEXT_PUBLIC_SUPABASE_URL=あなたのSupabaseプロジェクトURL
+NEXT_PUBLIC_SUPABASE_ANON_KEY=あなたのSupabase匿名キー
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 3. アプリケーションの実行
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm install
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+ブラウザで[http://localhost:3000](http://localhost:3000)にアクセスすると、アプリケーションが表示されます。
 
-## Deploy on Vercel
+## Vercelへのデプロイ
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. [Vercel](https://vercel.com/)にアクセスし、アカウント作成・ログインします。
+2. 「New Project」をクリックし、GitHubリポジトリをインポートします。
+3. 環境変数に`NEXT_PUBLIC_SUPABASE_URL`と`NEXT_PUBLIC_SUPABASE_ANON_KEY`を設定します。
+4. 「Deploy」をクリックしてデプロイを開始します。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 機能
+
+- Todoの作成、読み取り、更新、削除（CRUD操作）
+- リアルタイムデータ同期（将来的な拡張）
+- レスポンシブデザイン
